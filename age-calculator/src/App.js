@@ -1,23 +1,34 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
 import './App.css';
 
+const initState = {
+  day: '',
+  month: '',
+  year: ''
+}
+
+function useReducerDate(state, action) {
+  switch (action.type) {
+    case "inputChange": 
+      return {
+        ...state,
+        [action.input.name]: Number(action.input.value)
+      }
+  }
+}
+
 function App() {
-  const [inputDate, setInputDate] = useState({
-    day: undefined,
-    month: undefined,
-    year: undefined
-  });
+  const [inputDate, dispatch] = useReducer(useReducerDate, initState);
 
   function handleValueChange(e) {
-    console.log({
-      1: e.currentTarget.id,
-      2: e.currentTarget.value
+    console.log({inputDate})
+    dispatch({
+      type: "inputChange",
+      input: {
+        name: e.currentTarget.name,
+        value: e.currentTarget.value
+      }
     })
-
-    setInputDate((prev) => ({
-      ...prev,
-      [e.currentTarget.name]: e.currentTarget.value
-    }));
   }
   
   return (
@@ -41,11 +52,35 @@ function App() {
         </div>
         <div className="input-group">
           <label>Month</label>
-          <input className={""} tabIndex="2" type="number" name="month" id="month" placeholder="MM" maxLength="2" />
+          <input 
+            className={""} 
+            tabIndex="2" 
+            type="number" 
+            name="month" 
+            id="month" 
+            placeholder="MM" 
+            maxLength="2"
+            min="1"
+            max="12"
+            onChange={handleValueChange}
+            value={inputDate.month}
+          />
         </div>
         <div className="input-group">
           <label>Year</label>
-          <input className={""} tabIndex="3" type="number" name="year" id="year" placeholder="YYYY" maxLength="4" />
+          <input 
+            className={""} 
+            tabIndex="3" 
+            type="number" 
+            name="year" 
+            id="year" 
+            placeholder="YYYY" 
+            maxLength="4"
+            min="1"
+            max="12"
+            onChange={handleValueChange}
+            value={inputDate.year}
+          />
         </div>
       </section>
       <section className="section-divider">
