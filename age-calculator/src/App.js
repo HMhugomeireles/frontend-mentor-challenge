@@ -1,12 +1,43 @@
+import { useState } from 'react';
 import './App.css';
 
 function App() {
+  const [inputDate, setInputDate] = useState({
+    day: undefined,
+    month: undefined,
+    year: undefined
+  });
+
+  function handleValueChange(e) {
+    console.log({
+      1: e.currentTarget.id,
+      2: e.currentTarget.value
+    })
+
+    setInputDate((prev) => ({
+      ...prev,
+      [e.currentTarget.name]: e.currentTarget.value
+    }));
+  }
+  
   return (
     <section className="box">
       <section className="section-input">
         <div className="input-group">
           <label>Day</label>
-          <input className={""} tabIndex="1" type="number" name="day" id="day" placeholder="DD" maxLength="2" />
+          <input 
+            className={""} 
+            tabIndex="1" 
+            type="number" 
+            name="day" 
+            id="day" 
+            placeholder="DD" 
+            min="1" 
+            max="31" 
+            maxLength="2"
+            onChange={handleValueChange}
+            value={inputDate.day}
+          />
         </div>
         <div className="input-group">
           <label>Month</label>
